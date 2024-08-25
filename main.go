@@ -9,16 +9,16 @@ import (
 	"strings"
 )
 
-type Node struct {
+type Node[T any] struct {
 	data int
-	next *Node
+	next *Node[T]
 }
 
-type LinkedList struct {
-	head *Node
+type LinkedList[T any] struct {
+	head *Node[T]
 }
 
-func (l *LinkedList) addNode(n *Node) {
+func (l *LinkedList[T]) addNode(n *Node[T]) {
 	if l.head == nil {
 		l.head = n
 	} else {
@@ -30,7 +30,7 @@ func (l *LinkedList) addNode(n *Node) {
 	}
 }
 
-func (l *LinkedList) getNode(d int) (*Node, error) {
+func (l *LinkedList[T]) getNode(d int) (*Node[T], error) {
 	current := l.head
 
 	if current == nil {
@@ -51,7 +51,7 @@ func (l *LinkedList) getNode(d int) (*Node, error) {
 	return nil, errors.New("node not found")
 }
 
-func (l *LinkedList) removeNode(n *Node) {
+func (l *LinkedList[T]) removeNode(n *Node[T]) {
 	current := l.head
 	previous := l.head
 
@@ -65,12 +65,12 @@ func (l *LinkedList) removeNode(n *Node) {
 	current = current.next
 }
 
-func (l *LinkedList) insertNode(data int, pos int) error {
+func (l *LinkedList[T]) insertNode(data int, pos int) error {
 	if pos < 0 {
 		return errors.New("position cannot be negative")
 	}
 
-	node := &Node{data: data}
+	node := &Node[T]{data: data}
 
 	if pos == 0 {
 		node.next = l.head
@@ -93,7 +93,7 @@ func (l *LinkedList) insertNode(data int, pos int) error {
 	return nil
 }
 
-func (l *LinkedList) length() int {
+func (l *LinkedList[T]) length() int {
 	count := 0
 	current := l.head
 
@@ -105,11 +105,11 @@ func (l *LinkedList) length() int {
 	return count
 }
 
-func (l *LinkedList) clear() {
+func (l *LinkedList[T]) clear() {
 	l.head = nil
 }
 
-func (l *LinkedList) print() {
+func (l *LinkedList[T]) print() {
 	var sb strings.Builder
 	current := l.head
 	for current != nil {
@@ -124,10 +124,10 @@ func (l *LinkedList) print() {
 	fmt.Println(sb.String())
 }
 
-func (l *LinkedList) reverse() {
-	var prev *Node
+func (l *LinkedList[T]) reverse() {
+	var prev *Node[T]
 	current := l.head
-	var next *Node
+	var next *Node[T]
 
 	for current != nil {
 		next = current.next
@@ -160,7 +160,7 @@ func presentOptions() (int, error) {
 
 func main() {
 
-	list := LinkedList{}
+	list := LinkedList[int]{}
 
 	for {
 		option, err := presentOptions()
@@ -179,7 +179,7 @@ func main() {
 				fmt.Println("Error:", err)
 			}
 
-			list.addNode(&Node{data: data})
+			list.addNode(&Node[int]{data: data})
 			list.print()
 			break
 		case 2:
